@@ -2,7 +2,10 @@ package products
 
 import (
 	"context"
+	"encoding/json"
+	"log"
 	"ms-go/app/helpers"
+	"ms-go/app/messager"
 	"ms-go/app/models"
 	"ms-go/db"
 	"net/http"
@@ -42,6 +45,19 @@ func Create(data models.Product, isAPI bool) (*models.Product, error) {
 	defer db.Disconnect()
 
 	if isAPI {
+		msg, err := json.Marshal(&data)
+		if err != nil {
+			return nil, err
+		}
+
+		go func() {
+			inst, err := messager.New().Setup(messager.TOPIC_GO_TO_RAILS, messager.PARTITION_DEFAULT).Write(msg)
+			if err != nil {
+				log.Println(err)
+			}
+
+			inst.Close()
+		}()
 	}
 
 	return &data, nil
