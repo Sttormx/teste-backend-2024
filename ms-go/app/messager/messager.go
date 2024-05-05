@@ -22,8 +22,8 @@ func New() *Messager {
 	return &Messager{}
 }
 
-func (c *Messager) Setup(topic string, partition int) *Messager {
-	conn, err := kafka.DialLeader(context.Background(), "tcp", "kafka:29092", topic, partition)
+func (c *Messager) Setup(topic string) *Messager {
+	conn, err := kafka.DialLeader(context.Background(), "tcp", "kafka:29092", topic, PARTITION_DEFAULT)
 	if err != nil {
 		log.Fatal("failed to dial leader:", err)
 	}
@@ -48,6 +48,7 @@ func (c *Messager) Write(message []byte) (*Messager, error) {
 	return c, err
 }
 
+// This function stop current goroutine execution until reader close
 func (c *Messager) SetupReader(topic string, consumer func(message []byte)) {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers:   []string{"kafka:29092"},

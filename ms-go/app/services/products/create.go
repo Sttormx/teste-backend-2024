@@ -50,8 +50,9 @@ func Create(data models.Product, isAPI bool) (*models.Product, error) {
 			return nil, err
 		}
 
+		// New goroutine to not increase API response time
 		go func() {
-			inst, err := messager.New().Setup(messager.TOPIC_GO_TO_RAILS, messager.PARTITION_DEFAULT).Write(msg)
+			inst, err := messager.New().Setup(messager.TOPIC_GO_TO_RAILS).Write(msg)
 			if err != nil {
 				log.Println(err)
 			}
