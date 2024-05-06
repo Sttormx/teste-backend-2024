@@ -58,12 +58,24 @@ services:
       - kafka
     networks: 
       - broker-kafka
+      - data-tier
     ports:
       - 3030:3030
 
-
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - data-tier
 
 networks: 
   broker-kafka:
     driver: bridge
+  data-tier:
+    driver: bridge
 
+volumes:
+  mongo_data:
