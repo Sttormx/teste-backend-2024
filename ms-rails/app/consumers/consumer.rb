@@ -12,6 +12,7 @@ class Consumer < ApplicationConsumer
           description: data["description"],
           brand: data["brand"],
           price: data["price"],
+          stock: data["stock"],
           created_at: data["created_at"],
           updated_at: data["updated_at"],
         )
@@ -21,7 +22,6 @@ class Consumer < ApplicationConsumer
       end
 
       existing_product.update(data)
-      end
     end
   end
 end

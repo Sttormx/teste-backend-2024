@@ -23,6 +23,7 @@ class Api::V1::ProductsController < ApplicationController
         :name,
         :brand,
         :price,
+        :stock,
         :description
       ]
     )
