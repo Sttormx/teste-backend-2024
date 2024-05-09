@@ -16,6 +16,7 @@ func main() {
 	// Messaging between microsservices
 	// Reader is in a new goroutine to not block API Router
 	instance := messager.New()
+	instance.SetupDefaultTopics()
 	go instance.SetupReader(messager.TOPIC_RAILS_TO_GO, consumer.Handler)
 
 	router.Run()

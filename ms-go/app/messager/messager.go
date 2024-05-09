@@ -48,6 +48,11 @@ func (c *Messager) Write(message []byte) (*Messager, error) {
 	return c, err
 }
 
+func (c *Messager) SetupDefaultTopics() {
+	c.Setup(TOPIC_GO_TO_RAILS).Conn.CreateTopics(kafka.TopicConfig{NumPartitions: 1, Topic: TOPIC_GO_TO_RAILS})
+	c.Close()
+}
+
 // This function stop current goroutine execution until reader close
 func (c *Messager) SetupReader(topic string, consumer func(message []byte)) {
 	reader := kafka.NewReader(kafka.ReaderConfig{
